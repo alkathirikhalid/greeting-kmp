@@ -4,9 +4,14 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    kotlin("plugin.serialization") version "2.0.0"
+    id("co.touchlab.skie") version "0.9.3"
 }
 
 kotlin {
+
+    val ktorVersion = "2.3.7"
+
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -29,6 +34,18 @@ kotlin {
         commonMain.dependencies {
             // put your Multiplatform dependencies here
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
+
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+
+            implementation("io.ktor:ktor-client-core:$ktorVersion")
+            implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+        }
+        androidMain.dependencies {
+            implementation("io.ktor:ktor-client-android:$ktorVersion")
+        }
+        iosMain.dependencies {
+            implementation("io.ktor:ktor-client-darwin:$ktorVersion")
         }
     }
 }
